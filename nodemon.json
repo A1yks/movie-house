@@ -1,0 +1,5 @@
+{
+    "ext": "ts,tsx,js,json,scss,css",
+    "watch": ["src/api", "./*.*"],
+    "ignore": ["*.d.ts"]
+}
