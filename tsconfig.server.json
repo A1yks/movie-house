@@ -1,9 +1,9 @@
 {
     "extends": "./tsconfig.json",
     "compilerOptions": {
+        "lib": ["ESNext"],
         "outDir": ".next/production-server/",
         "noEmit": false
     },
-    "include": ["./src/api"],
-    "exclude": ["src"]
+    "include": ["./src/api"]
 }

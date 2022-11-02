@@ -1,5 +1,5 @@
 {
-    "ext": "ts,tsx,js,json,scss,css",
+    "ext": "ts,tsx,js,json,scss,css,d.ts",
     "watch": ["src/api", "./*.*"],
     "ignore": ["*.d.ts"]
 }

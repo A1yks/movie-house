@@ -1,19 +1,24 @@
 import express from 'express';
 
 declare global {
-    namespace Server {
+    declare namespace Server {
         export type ResponseBody<T = any> = { data: T; error?: never } | { error: string; data?: never };
 
         export interface Request<Body = any, Params = any, QueryParams = any>
             extends express.Request<Params, any, any, QueryParams> {
             body: Body;
-            userId?: string;
+            userId?: number;
+        }
+
+        export interface SecuredRequest<Body = any, Params = any, QueryParams = any>
+            extends Omit<Request<Body, Params, QueryParams>, 'userId'> {
+            userId: number;
         }
 
         export type Response<T = any> = express.Response<ResponseBody<T>>;
     }
 
-    namespace Service {
+    declare namespace Service {
         export interface Error {
             status: number;
             error: string;
