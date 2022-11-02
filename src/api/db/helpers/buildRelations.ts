@@ -37,6 +37,11 @@ function buildRelations() {
         foreignKey: 'userId',
         onDelete: 'CASCADE',
     });
+
+    RefreshToken.belongsTo(User, {
+        targetKey: 'id',
+        foreignKey: 'userId',
+    });
 }
 
 export default buildRelations;

@@ -10,11 +10,6 @@ declare global {
             userId?: number;
         }
 
-        export interface SecuredRequest<Body = any, Params = any, QueryParams = any>
-            extends Omit<Request<Body, Params, QueryParams>, 'userId'> {
-            userId: number;
-        }
-
         export type Response<T = any> = express.Response<ResponseBody<T>>;
     }
 

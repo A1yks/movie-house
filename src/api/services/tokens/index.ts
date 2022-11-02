@@ -3,12 +3,12 @@ import { User } from '../../db/models';
 import RefreshToken from '../../db/models/RefreshToken';
 import { TokenPayload } from '../../types/tokens';
 
-class TokensService {
-    expiresIn = 60 * 60 * 24; // 1 day (in seconds)
+export namespace TokensService {
+    export const expiresIn = 60 * 60 * 24;
 
-    async issueAccessToken(data: TokenPayload) {
+    export async function issueAccessToken(data: TokenPayload) {
         return new Promise<string>((resolve, reject) => {
-            jwt.sign(data, process.env.TOKEN_SECRET, { expiresIn: this.expiresIn }, (err, token) => {
+            jwt.sign(data, process.env.TOKEN_SECRET, { expiresIn: expiresIn }, (err, token) => {
                 if (err) {
                     reject(err);
                 } else if (token === undefined) {
@@ -20,8 +20,8 @@ class TokensService {
         });
     }
 
-    async issueTokens(userId: User['id']) {
-        const accessTokenPromise = this.issueAccessToken({ userId });
+    export async function issueTokens(userId: User['id']) {
+        const accessTokenPromise = issueAccessToken({ userId });
         const refreshTokenPromise = RefreshToken.issueToken(userId);
 
         const [accessToken, refreshToken] = await Promise.all([accessTokenPromise, refreshTokenPromise]);
@@ -29,7 +29,7 @@ class TokensService {
         return { accessToken, refreshToken };
     }
 
-    async verifyToken(token: string) {
+    export async function verifyToken(token: string) {
         return new Promise<string | jwt.JwtPayload | undefined>((resolve, reject) => {
             jwt.verify(token, process.env.TOKEN_SECRET, (err, tokenPayload) => {
                 if (err) {
@@ -41,5 +41,3 @@ class TokensService {
         });
     }
 }
-
-export default new TokensService();

@@ -1,4 +1,11 @@
-import { Model, InferAttributes, InferCreationAttributes, DataTypes, ForeignKey } from 'sequelize';
+import {
+    Model,
+    InferAttributes,
+    InferCreationAttributes,
+    DataTypes,
+    ForeignKey,
+    HasOneGetAssociationMixin,
+} from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import db from '../database';
 import User from './User';
@@ -7,6 +14,8 @@ class RefreshToken extends Model<InferAttributes<RefreshToken>, InferCreationAtt
     declare token: string;
     declare userId: ForeignKey<User['id']>;
     declare expirityDate: Date;
+
+    declare getUser: HasOneGetAssociationMixin<User>;
 
     static expiresIn = 60 * 60 * 24 * 7; // 7 days (in secods)
 
@@ -35,7 +44,7 @@ class RefreshToken extends Model<InferAttributes<RefreshToken>, InferCreationAtt
     }
 
     static verifyToken(token: RefreshToken) {
-        return token.expirityDate.getTime() < Date.now();
+        return token.expirityDate.getTime() >= Date.now();
     }
 }
 

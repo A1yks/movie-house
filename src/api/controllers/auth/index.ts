@@ -1,13 +1,11 @@
-import bind from 'bind-decorator';
-import RefreshToken from '../../db/models/RefreshToken';
-import AuthService from '../../services/auth/AuthService';
-import UserService from '../../services/user/UserService';
+import { AuthService } from '../../services/auth';
+import { UserService } from '../../services/user';
 import logger from '../../utils/logger';
-import { LoginReq, RegisterReq } from './AuthController.types';
+import setRefreshTokenCookie from '../../utils/setRefreshTokenCookie';
+import { LoginReq, RegisterReq } from './types';
 
-class AuthController {
-    @bind
-    async register(req: Server.Request<RegisterReq>, res: Server.Response) {
+export namespace AuthController {
+    export async function register(req: Server.Request<RegisterReq>, res: Server.Response) {
         const { username, password, role } = req.body;
 
         try {
@@ -19,7 +17,7 @@ class AuthController {
 
             const { userInfo, tokens } = data;
 
-            this.setRefreshTokenCookie(res, tokens.refreshToken);
+            setRefreshTokenCookie(res, tokens.refreshToken);
             res.status(201).json({ data: { userInfo, accessToken: tokens.accessToken } });
         } catch (err) {
             logger.error(err);
@@ -27,8 +25,7 @@ class AuthController {
         }
     }
 
-    @bind
-    async login(req: Server.Request<LoginReq>, res: Server.Response) {
+    export async function login(req: Server.Request<LoginReq>, res: Server.Response) {
         const { username, password } = req.body;
 
         try {
@@ -46,21 +43,10 @@ class AuthController {
 
             const userInfo = await UserService.getUserInfo({ userId: user.id });
 
-            this.setRefreshTokenCookie(res, tokens.refreshToken);
+            setRefreshTokenCookie(res, tokens.refreshToken);
             res.status(200).json({ data: { userInfo, accessToken: tokens.accessToken } });
         } catch (err) {
             res.status(500).json({ error: 'An unexpected error occurred while trying to logging into account' });
         }
     }
-
-    private setRefreshTokenCookie(res: Server.Response, refreshToken: string) {
-        res.cookie('refreshToken', refreshToken, {
-            maxAge: RefreshToken.expiresIn * 1000,
-            httpOnly: true,
-            sameSite: true,
-            secure: true,
-        });
-    }
 }
-
-export default new AuthController();
