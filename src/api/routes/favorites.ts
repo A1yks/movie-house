@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import UsersController from '../controllers/user';
-import { TokensMiddleware } from '../middleware/tokens';
+import TokensMiddleware from '../middleware/tokens';
 
 const router = Router();
 

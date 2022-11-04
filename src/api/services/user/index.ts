@@ -53,4 +53,4 @@ export namespace UsersService {
     }
 }
 
-export default UserService;
+export default UsersService;

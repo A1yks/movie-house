@@ -3,7 +3,7 @@ import db from '../../db/database';
 import { User, UserInfo } from '../../db/models';
 import { UserRoles } from '../../db/models/User';
 import TokensService from '../tokens';
-import UserService from '../user';
+import UsersService from '../user';
 
 namespace AuthService {
     export async function register(username: string, password: string, role: UserRoles) {

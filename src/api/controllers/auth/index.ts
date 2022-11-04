@@ -1,5 +1,5 @@
 import AuthService from '../../services/auth';
-import UserService from '../../services/user';
+import UsersService from '../../services/user';
 import logger from '../../utils/logger';
 import setRefreshTokenCookie from '../../utils/setRefreshTokenCookie';
 import { LoginReq, RegisterReq } from './types';

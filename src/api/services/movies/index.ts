@@ -4,11 +4,11 @@ import { MovieAttrs } from '../../db/models/Movie';
 
 namespace MoviesService {
     /**
-     * Finds movie in the database by given attributes
+     * Gets movie from the database by given attributes
      * @param movieData Movies' search data
      * @returns Found movie or null
      */
-    export async function findMovie(movieData: Partial<MovieAttrs>) {
+    export async function getMovie(movieData: Partial<MovieAttrs>) {
         return await Movie.findOne({ where: movieData });
     }
 
