@@ -1,7 +1,9 @@
 import { Model, InferAttributes, InferCreationAttributes, CreationOptional, DataTypes } from 'sequelize';
 import db from '../database';
 
-class Movie extends Model<InferAttributes<Movie>, InferCreationAttributes<Movie>> {
+export type MovieAttrs = InferAttributes<Movie>;
+
+class Movie extends Model<MovieAttrs, InferCreationAttributes<Movie>> {
     declare id: CreationOptional<number>;
     declare title: string;
     declare description: string;

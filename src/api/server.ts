@@ -5,6 +5,7 @@ import db, { connectToDB } from './db/database';
 import buildRelations from './db/helpers/buildRelations';
 import authRouter from './routes/auth';
 import tokensRouter from './routes/tokens';
+import favoritesRouter from './routes/favorites';
 
 const dev = process.env.NODE_ENV !== 'production';
 const port = process.env.PORT || 3000;
@@ -30,6 +31,7 @@ const port = process.env.PORT || 3000;
 
             app.use('/api/auth', authRouter);
             app.use('/api/tokens', tokensRouter);
+            app.use('/api/favorites', favoritesRouter);
 
             app.all('*', (req, res) => {
                 return handle(req, res);

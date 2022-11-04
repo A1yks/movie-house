@@ -2,7 +2,9 @@ import { Model, InferAttributes, InferCreationAttributes, CreationOptional, Fore
 import db from '../database';
 import User from './User';
 
-class UserInfo extends Model<InferAttributes<UserInfo>, InferCreationAttributes<UserInfo>> {
+export type UserInfoAttrs = InferAttributes<UserInfo>;
+
+class UserInfo extends Model<UserInfoAttrs, InferCreationAttributes<UserInfo>> {
     declare id: CreationOptional<number>;
     declare avatar?: string;
     declare userId: ForeignKey<User['id']>;

@@ -1,5 +1,14 @@
-import { CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model, SMALLINT } from 'sequelize';
+import {
+    CreationOptional,
+    DataTypes,
+    HasManyAddAssociationMixin,
+    InferAttributes,
+    InferCreationAttributes,
+    Model,
+    SMALLINT,
+} from 'sequelize';
 import db from '../database';
+import Movie from './Movie';
 
 export enum UserRoles {
     GUEST = 0,
@@ -7,11 +16,16 @@ export enum UserRoles {
     ADMIN = 2,
 }
 
-class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
+export type UserAttrs = InferAttributes<User>;
+
+class User extends Model<UserAttrs, InferCreationAttributes<User>> {
     declare id: CreationOptional<number>;
     declare username: string;
     declare password: string;
     declare role: UserRoles;
+
+    declare addMovie: HasManyAddAssociationMixin<Movie, Movie['id']>;
+    declare removeMovie: HasManyAddAssociationMixin<Movie, Movie['id']>;
 }
 
 User.init(

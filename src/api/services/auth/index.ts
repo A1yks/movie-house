@@ -3,11 +3,11 @@ import db from '../../db/database';
 import { User, UserInfo } from '../../db/models';
 import { UserRoles } from '../../db/models/User';
 import { TokensService } from '../tokens';
-import { UserService } from '../user';
+import { UsersService } from '../user';
 
 export namespace AuthService {
     export async function register(username: string, password: string, role: UserRoles) {
-        const userExists = await UserService.userExists({ username });
+        const userExists = await UsersService.userExists({ username });
 
         if (userExists) {
             return null;
