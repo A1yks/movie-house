@@ -5,6 +5,7 @@ import db, { connectToDB } from './db/database';
 import buildRelations from './db/helpers/buildRelations';
 import authRouter from './routes/auth';
 import tokensRouter from './routes/tokens';
+import favoritesRouter from './routes/favorites';
 import moviesRouter from './routes/movies';
 
 const dev = process.env.NODE_ENV !== 'production';
@@ -31,6 +32,7 @@ const port = process.env.PORT || 3000;
 
             app.use('/api/auth', authRouter);
             app.use('/api/tokens', tokensRouter);
+            app.use('/api/favorites', favoritesRouter);
             app.use('/api/movies', moviesRouter);
 
             app.all('*', (req, res) => {

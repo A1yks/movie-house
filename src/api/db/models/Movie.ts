@@ -3,7 +3,7 @@ import db from '../database';
 
 export type MovieAttrs = InferAttributes<Movie>;
 
-class Movie extends Model<InferAttributes<Movie>, MovieAttrs> {
+class Movie extends Model<MovieAttrs, InferCreationAttributes<Movie>> {
     declare id: CreationOptional<number>;
     declare title: string;
     declare description: string;

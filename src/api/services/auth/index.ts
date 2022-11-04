@@ -7,7 +7,7 @@ import UserService from '../user';
 
 namespace AuthService {
     export async function register(username: string, password: string, role: UserRoles) {
-        const userExists = await UserService.userExists({ username });
+        const userExists = await UsersService.userExists({ username });
 
         if (userExists) {
             return null;

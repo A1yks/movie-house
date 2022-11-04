@@ -29,7 +29,7 @@ namespace AuthController {
         const { username, password } = req.body;
 
         try {
-            const user = await UserService.getUser({ username });
+            const user = await UsersService.getUser({ username });
 
             if (user === null) {
                 return res.status(404).json({ error: "User with provided username doesn't exist" });
@@ -41,7 +41,7 @@ namespace AuthController {
                 return res.status(401).json({ error: "Username and/or password doesn't match" });
             }
 
-            const userInfo = await UserService.getUserInfo({ userId: user.id });
+            const userInfo = await UsersService.getUserInfo({ userId: user.id });
 
             setRefreshTokenCookie(res, tokens.refreshToken);
             res.status(200).json({ data: { userInfo, accessToken: tokens.accessToken } });
