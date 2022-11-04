@@ -2,7 +2,7 @@ import { NextFunction } from 'express';
 import Joi from 'joi';
 import { ValidationConfig } from './types';
 
-export namespace ValidationMiddleware {
+namespace ValidationMiddleware {
     export function validate(
         schema: Joi.Schema,
         config: ValidationConfig = { validateBody: true, validateParams: false }
@@ -22,3 +22,5 @@ export namespace ValidationMiddleware {
         };
     }
 }
+
+export default ValidationMiddleware;

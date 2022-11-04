@@ -1,10 +1,10 @@
-import { AuthService } from '../../services/auth';
-import { UserService } from '../../services/user';
+import AuthService from '../../services/auth';
+import UserService from '../../services/user';
 import logger from '../../utils/logger';
 import setRefreshTokenCookie from '../../utils/setRefreshTokenCookie';
 import { LoginReq, RegisterReq } from './types';
 
-export namespace AuthController {
+namespace AuthController {
     export async function register(req: Server.Request<RegisterReq>, res: Server.Response) {
         const { username, password, role } = req.body;
 
@@ -50,3 +50,5 @@ export namespace AuthController {
         }
     }
 }
+
+export default AuthController;

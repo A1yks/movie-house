@@ -1,7 +1,7 @@
-import { TokensService } from '../../services/tokens';
+import TokensService from '../../services/tokens';
 import setRefreshTokenCookie from '../../utils/setRefreshTokenCookie';
 
-export namespace TokensController {
+namespace TokensController {
     export function sendVerifiedResponse(req: Server.Request, res: Server.Response) {
         res.status(204).send();
     }
@@ -21,3 +21,5 @@ export namespace TokensController {
         }
     }
 }
+
+export default TokensController;

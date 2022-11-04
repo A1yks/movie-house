@@ -2,10 +2,10 @@ import bcrypt from 'bcrypt';
 import db from '../../db/database';
 import { User, UserInfo } from '../../db/models';
 import { UserRoles } from '../../db/models/User';
-import { TokensService } from '../tokens';
-import { UserService } from '../user';
+import TokensService from '../tokens';
+import UserService from '../user';
 
-export namespace AuthService {
+namespace AuthService {
     export async function register(username: string, password: string, role: UserRoles) {
         const userExists = await UserService.userExists({ username });
 
@@ -41,3 +41,5 @@ export namespace AuthService {
         return hash;
     }
 }
+
+export default AuthService;

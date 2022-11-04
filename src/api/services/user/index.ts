@@ -1,6 +1,6 @@
 import { User, UserInfo } from '../../db/models';
 
-export namespace UserService {
+namespace UserService {
     export async function getUser(userData: Partial<User>) {
         return await User.findOne({ where: userData });
     }
@@ -18,3 +18,5 @@ export namespace UserService {
         return user !== null;
     }
 }
+
+export default UserService;

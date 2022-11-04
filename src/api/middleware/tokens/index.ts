@@ -1,24 +1,46 @@
 import { NextFunction } from 'express';
-import { TokensService } from '../../services/tokens';
+import TokensService from '../../services/tokens';
 import { TokenPayload } from '../../types/tokens';
 import logger from '../../utils/logger';
 import { TokenExpiredError } from 'jsonwebtoken';
 import { RefreshTokenCookies } from './types';
 import RefreshToken from '../../db/models/RefreshToken';
+import User, { UserRoles } from '../../db/models/User';
 
-export namespace TokensMiddleware {
+namespace TokensMiddleware {
+    function extractAcessToken(req: Server.Request) {
+        const authHeader = req.headers.authorization;
+        const matched = authHeader?.match(/Bearer\s+(.+)$/);
+
+        if (!matched || !matched[1]) {
+            return null;
+        }
+
+        return matched[1];
+    }
+
+    async function verifyToken(req: Server.Request, res: Server.Response) {
+        const token = extractAcessToken(req);
+
+        if (token === null) {
+            res.status(403).json({ error: 'Authorization token is missing' });
+
+            return null;
+        }
+
+        const payload = (await TokensService.verifyToken(token)) as TokenPayload;
+
+        return payload;
+    }
+
     export function verifyAcessToken(req: Server.Request, res: Server.Response, next: NextFunction) {
         async function handler() {
             try {
-                const authHeader = req.headers.authorization;
-                const matched = authHeader?.match(/Bearer\s+(.+)$/);
+                const payload = await verifyToken(req, res);
 
-                if (!matched || !matched[1]) {
-                    return res.status(403).json({ error: 'Authorization token is missing' });
+                if (payload === null) {
+                    return;
                 }
-
-                const token = matched[1];
-                const payload = (await TokensService.verifyToken(token)) as TokenPayload;
 
                 req.userId = payload.userId;
 
@@ -60,8 +82,6 @@ export namespace TokensMiddleware {
 
                 const user = await refreshToken.getUser();
 
-                console.log(user);
-
                 if (!user) {
                     return res.status(404).json({ error: 'The user who owns the token was not found' });
                 }
@@ -77,4 +97,34 @@ export namespace TokensMiddleware {
 
         handler();
     }
+
+    export function verifyRole(role: UserRoles) {
+        return (req: Server.Request, res: Server.Response, next: NextFunction) => {
+            async function handler() {
+                const payload = await verifyToken(req, res);
+
+                if (payload === null) {
+                    return;
+                }
+
+                const user = await User.findByPk(payload.userId);
+
+                if (user === null) {
+                    return res.status(404).json({ error: "User with given id wasn't found" });
+                }
+
+                if (user.role !== role) {
+                    return res.status(403).json({ error: "You don't have permissions to perform this operation" });
+                }
+
+                next();
+            }
+
+            handler();
+        };
+    }
+
+    export const verifyAdmin = verifyRole(UserRoles.ADMIN);
 }
+
+export default TokensMiddleware;

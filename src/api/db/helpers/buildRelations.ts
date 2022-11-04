@@ -15,6 +15,11 @@ function buildRelations() {
         foreignKey: 'movieId',
     });
 
+    Comment.belongsTo(User, {
+        targetKey: 'id',
+        foreignKey: 'userId',
+    });
+
     User.hasOne(UserInfo, {
         sourceKey: 'id',
         foreignKey: 'userId',

@@ -3,8 +3,8 @@ import { User } from '../../db/models';
 import RefreshToken from '../../db/models/RefreshToken';
 import { TokenPayload } from '../../types/tokens';
 
-export namespace TokensService {
-    export const expiresIn = 60 * 60 * 24;
+namespace TokensService {
+    export const expiresIn = 60 * 60 * 3;
 
     export async function issueAccessToken(data: TokenPayload) {
         return new Promise<string>((resolve, reject) => {
@@ -41,3 +41,5 @@ export namespace TokensService {
         });
     }
 }
+
+export default TokensService;
