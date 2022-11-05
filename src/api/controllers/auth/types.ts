@@ -1,4 +1,4 @@
-import { UserRoles } from '../../db/models/User';
+import { UserRoles } from 'api/db/models/User';
 
 export interface LoginReq {
     username: string;

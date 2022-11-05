@@ -8,7 +8,7 @@ function buildRelations() {
         onDelete: 'CASCADE',
     });
 
-    Movie.belongsToMany(User, { through: Favorites });
+    Movie.belongsToMany(User, { through: Favorites, targetKey: 'id', foreignKey: 'userId' });
 
     Genre.belongsTo(Movie, {
         targetKey: 'id',
@@ -35,6 +35,8 @@ function buildRelations() {
     User.belongsToMany(Movie, {
         through: Favorites,
         onDelete: 'CASCADE',
+        targetKey: 'id',
+        foreignKey: 'movieId',
     });
 
     User.hasOne(RefreshToken, {

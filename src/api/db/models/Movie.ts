@@ -30,7 +30,7 @@ Movie.init(
             allowNull: false,
         },
         rating: {
-            type: DataTypes.SMALLINT,
+            type: DataTypes.FLOAT,
             allowNull: false,
         },
         releaseDate: {

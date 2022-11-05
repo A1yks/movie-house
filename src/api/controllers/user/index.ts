@@ -5,8 +5,8 @@ import { FavoritesReq, GetFavoritesReq } from './types';
 
 namespace UsersController {
     async function getUserAndMovie(req: Server.Request<FavoritesReq>, res: Server.Response) {
-        const { userId, movieId } = req.body;
-        const user = await UsersService.getUser({ id: userId });
+        const { movieId } = req.body;
+        const user = await UsersService.getUser({ id: req.userId });
 
         if (user === null) {
             res.status(404).json({ error: "User with given id wasn't found" });

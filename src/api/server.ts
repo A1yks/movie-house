@@ -1,8 +1,8 @@
 import express from 'express';
 import next from 'next';
 import cookieParser from 'cookie-parser';
-import db, { connectToDB } from './db/database';
-import buildRelations from './db/helpers/buildRelations';
+import db, { connectToDB } from 'api/db/database';
+import buildRelations from 'api/db/helpers/buildRelations';
 import authRouter from './routes/auth';
 import tokensRouter from './routes/tokens';
 import favoritesRouter from './routes/favorites';

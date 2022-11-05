@@ -1,15 +1,26 @@
 import { AddMovieData, EditMovieData } from '../../controllers/movies/types';
-import { Movie } from '../../db/models';
-import { MovieAttrs } from '../../db/models/Movie';
+import { Movie } from 'api/db/models';
+import { MovieAttrs } from 'api/db/models/Movie';
 
 namespace MoviesService {
     /**
      * Gets movie from the database by given attributes
-     * @param movieData Movies' search data
+     * @param movieData Movie's search data
      * @returns Found movie or null
      */
     export async function getMovie(movieData: Partial<MovieAttrs>) {
         return await Movie.findOne({ where: movieData });
+    }
+
+    /**
+     * Checks if movie exists or not
+     * @param movieData Movie's search data
+     * @returns True if movie exists, false otherwise
+     */
+    export async function movieExists(movieData: Partial<MovieAttrs>) {
+        const movie = await getMovie(movieData);
+
+        return movie !== null;
     }
 
     /**
@@ -33,11 +44,10 @@ namespace MoviesService {
 
     /**
      * Deletes movie by its id
-     * @param movieId Id of a movie to delete
-     * @returns The number of destroyed rows
+     * @param movie Movie instance to delete
      */
-    export async function deleteMovie(movieId: Movie['id']): Promise<number> {
-        return await Movie.destroy({ where: { id: movieId } });
+    export async function deleteMovie(movie: Movie) {
+        await movie.destroy();
     }
 }
 

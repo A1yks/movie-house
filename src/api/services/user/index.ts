@@ -1,10 +1,10 @@
-import { Movie, User, UserAttrs, UserInfo, UserInfoAttrs } from '../../db/models';
+import { Movie, User, UserAttrs, UserInfo, UserInfoAttrs } from 'api/db/models';
 
 export namespace UsersService {
     /**
      * Gets user from the database and returns its instance
      * @param userData Data of a user to find
-     * @returns User instance
+     * @returns User instance or null
      */
     export async function getUser(userData: Partial<UserAttrs>) {
         return await User.findOne({ where: userData });
@@ -26,7 +26,7 @@ export namespace UsersService {
     /**
      * Checks if user exists or not
      * @param userData Data of a user to find
-     * @returns User instance if user was found or null otherwise
+     * @returns True if user exists, false otherwise
      */
     export async function userExists(userData: Partial<UserAttrs>) {
         const user = await User.findOne({ where: userData });

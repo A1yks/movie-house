@@ -1,4 +1,4 @@
-import { Movie, User } from '../../db/models';
+import { Movie, User } from 'api/db/models';
 
 export interface FavoritesReq {
     userId: User['id'];

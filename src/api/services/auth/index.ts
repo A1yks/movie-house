@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
-import db from '../../db/database';
-import { User, UserInfo } from '../../db/models';
-import { UserRoles } from '../../db/models/User';
+import db from 'api/db/database';
+import { User, UserInfo } from 'api/db/models';
+import { UserRoles } from 'api/db/models/User';
 import TokensService from '../tokens';
 import UsersService from '../user';
 

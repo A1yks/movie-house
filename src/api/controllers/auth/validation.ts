@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { UserRoles } from '../../db/models/User';
+import { UserRoles } from 'api/db/models/User';
 import { LoginReq, RegisterReq } from './types';
 
 export const loginSchema = Joi.object<LoginReq>().keys({

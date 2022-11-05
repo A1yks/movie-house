@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
-import { User } from '../../db/models';
-import RefreshToken from '../../db/models/RefreshToken';
+import { User } from 'api/db/models';
+import RefreshToken from 'api/db/models/RefreshToken';
 import { TokenPayload } from '../../types/tokens';
 
 namespace TokensService {
