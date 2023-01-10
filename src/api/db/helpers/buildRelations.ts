@@ -1,4 +1,5 @@
 import { Comment, Favorites, Genre, Movie, User, UserInfo } from '../models';
+import Rating from '../models/Rating';
 import RefreshToken from '../models/RefreshToken';
 
 function buildRelations() {
@@ -10,6 +11,17 @@ function buildRelations() {
 
     Movie.belongsToMany(User, { through: Favorites, targetKey: 'id', foreignKey: 'userId' });
 
+    Movie.hasMany(Genre, {
+        sourceKey: 'id',
+        foreignKey: 'movieId',
+        onDelete: 'CASCADE',
+    });
+
+    Movie.hasOne(Movie, {
+        foreignKey: 'id',
+        as: 'selfJoin',
+    });
+
     Genre.belongsTo(Movie, {
         targetKey: 'id',
         foreignKey: 'movieId',
@@ -18,6 +30,18 @@ function buildRelations() {
     Comment.belongsTo(User, {
         targetKey: 'id',
         foreignKey: 'userId',
+    });
+
+    Comment.belongsTo(Comment, {
+        targetKey: 'id',
+        foreignKey: 'replyId',
+        as: 'parent',
+    });
+
+    Comment.hasMany(Comment, {
+        sourceKey: 'id',
+        foreignKey: 'replyId',
+        as: 'replies',
     });
 
     User.hasOne(UserInfo, {
@@ -48,6 +72,23 @@ function buildRelations() {
     RefreshToken.belongsTo(User, {
         targetKey: 'id',
         foreignKey: 'userId',
+    });
+
+    User.hasMany(Rating, {
+        sourceKey: 'id',
+        foreignKey: 'userId',
+    });
+
+    Movie.hasMany(Rating, {
+        sourceKey: 'id',
+        foreignKey: 'movieId',
+        as: 'ratings',
+        onDelete: 'CASCADE',
+    });
+
+    Rating.belongsTo(Movie, {
+        targetKey: 'id',
+        foreignKey: 'movieId',
     });
 }
 

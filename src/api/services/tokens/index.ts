@@ -4,7 +4,7 @@ import RefreshToken from 'api/db/models/RefreshToken';
 import { TokenPayload } from '../../types/tokens';
 
 namespace TokensService {
-    export const expiresIn = 60 * 60 * 3;
+    export const expiresIn = __DEV__ ? 60 * 60 * 24 * 30 : 60 * 60 * 3;
 
     export async function issueAccessToken(data: TokenPayload) {
         return new Promise<string>((resolve, reject) => {

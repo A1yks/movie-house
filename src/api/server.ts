@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import db, { connectToDB } from 'api/db/database';
 import buildRelations from 'api/db/helpers/buildRelations';
 import authRouter from './routes/auth';
+import commentsRouter from './routes/comments';
 import tokensRouter from './routes/tokens';
 import favoritesRouter from './routes/favorites';
 import moviesRouter from './routes/movies';
@@ -31,9 +32,10 @@ const port = process.env.PORT || 3000;
             app.use(cookieParser());
 
             app.use('/api/auth', authRouter);
-            app.use('/api/tokens', tokensRouter);
+            app.use('/api/comments', commentsRouter);
             app.use('/api/favorites', favoritesRouter);
             app.use('/api/movies', moviesRouter);
+            app.use('/api/tokens', tokensRouter);
 
             app.all('*', (req, res) => {
                 return handle(req, res);

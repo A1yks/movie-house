@@ -1,23 +1,24 @@
 import Joi from 'joi';
 import { CreateCommentReq, DeleteCommentReq, EditCommentReq, GetCommentsReq } from './types';
 
-const idSchema = Joi.number().min(1).required();
-const commentSchema = Joi.string().min(10).required();
+const idSchema = Joi.number().min(1);
+const commentSchema = Joi.string().trim().min(1).required();
 
 export const getCommentsSchema = Joi.object<GetCommentsReq>().keys({
-    movieId: idSchema,
+    movieId: idSchema.required(),
 });
 
 export const createCommentSchema = Joi.object<CreateCommentReq>().keys({
-    movieId: idSchema,
+    movieId: idSchema.required(),
     comment: commentSchema,
+    replyId: idSchema,
 });
 
 export const editCommentSchema = Joi.object<EditCommentReq>().keys({
-    commentId: idSchema,
+    commentId: idSchema.required(),
     comment: commentSchema,
 });
 
 export const deleteCommentSchema = Joi.object<DeleteCommentReq>().keys({
-    commentId: idSchema,
+    commentId: idSchema.required(),
 });

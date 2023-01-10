@@ -36,7 +36,7 @@ namespace UsersController {
             res.status(204).send();
         } catch (err) {
             logger.error(err);
-            res.status(500).json({ error: 'An unexpected error occured while adding movie to favorites' });
+            res.status(500).json({ error: 'An unexpected error occurred while adding movie to favorites' });
         }
     }
 
@@ -51,7 +51,7 @@ namespace UsersController {
             UsersService;
         } catch (err) {
             logger.error(err);
-            res.status(500).json({ error: 'An unexpected error occured while removing movie from favorites' });
+            res.status(500).json({ error: 'An unexpected error occurred while removing movie from favorites' });
         }
     }
 

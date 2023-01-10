@@ -45,7 +45,12 @@ User.init(
         },
         role: SMALLINT,
     },
-    { sequelize: db, tableName: 'users', timestamps: true }
+    {
+        sequelize: db,
+        tableName: 'users',
+        timestamps: true,
+        paranoid: true,
+    }
 );
 
 export default User;

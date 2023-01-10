@@ -51,7 +51,7 @@ class RefreshToken extends Model<InferAttributes<RefreshToken>, InferCreationAtt
 RefreshToken.init(
     {
         token: {
-            type: DataTypes.STRING(36),
+            type: DataTypes.UUID,
             allowNull: false,
         },
         expirityDate: {

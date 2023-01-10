@@ -17,7 +17,7 @@ namespace TokensController {
             setRefreshTokenCookie(res, refreshToken);
             res.status(201).json({ data: { accessToken } });
         } catch (err) {
-            res.status(500).json({ error: 'An unexpected error occured while issuing new tokens' });
+            res.status(500).json({ error: 'An unexpected error occurred while issuing new tokens' });
         }
     }
 }

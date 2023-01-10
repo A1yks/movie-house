@@ -2,7 +2,7 @@ import { NextFunction } from 'express';
 import TokensService from '../../services/tokens';
 import { TokenPayload } from '../../types/tokens';
 import logger from '../../utils/logger';
-import { TokenExpiredError } from 'jsonwebtoken';
+import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
 import { RefreshTokenCookies } from './types';
 import RefreshToken from 'api/db/models/RefreshToken';
 import User, { UserRoles } from 'api/db/models/User';
@@ -30,32 +30,44 @@ namespace TokensMiddleware {
 
         const payload = (await TokensService.verifyToken(token)) as TokenPayload;
 
+        console.log(payload);
+
         return payload;
     }
 
-    export function verifyAcessToken(req: Server.Request, res: Server.Response, next: NextFunction) {
-        async function handler() {
-            try {
-                const payload = await verifyToken(req, res);
-
-                if (payload === null) {
-                    return;
-                }
-
-                req.userId = payload.userId;
-
-                next();
-            } catch (err) {
-                if (err instanceof TokenExpiredError) {
-                    return res.status(401).json({ error: 'Token has expired' });
-                }
-
-                logger.error(err);
-                res.status(500).json({ error: 'An unexpected error occurred while validating the token' });
+    async function errorsHandler(
+        req: Server.Request,
+        res: Server.Response,
+        callback: (req: Server.Request, res: Server.Response) => Promise<unknown>
+    ) {
+        try {
+            await callback(req, res);
+        } catch (err) {
+            if (err instanceof TokenExpiredError) {
+                return res.status(401).json({ error: 'Token has expired' });
             }
-        }
 
-        handler();
+            if (err instanceof JsonWebTokenError) {
+                return res.status(400).json({ error: err.message });
+            }
+
+            logger.error(err);
+            res.status(500).json({ error: 'An unexpected error occurred while validating the token' });
+        }
+    }
+
+    export function verifyAcessToken(req: Server.Request, res: Server.Response, next: NextFunction) {
+        errorsHandler(req, res, async () => {
+            const payload = await verifyToken(req, res);
+
+            if (payload === null) {
+                return;
+            }
+
+            req.userId = payload.userId;
+
+            next();
+        });
     }
 
     export function verifyRefreshToken(req: Server.Request, res: Server.Response, next: NextFunction) {
@@ -100,7 +112,7 @@ namespace TokensMiddleware {
 
     export function verifyRole(role: UserRoles) {
         return (req: Server.Request, res: Server.Response, next: NextFunction) => {
-            async function handler() {
+            errorsHandler(req, res, async () => {
                 const payload = await verifyToken(req, res);
 
                 if (payload === null) {
@@ -110,17 +122,16 @@ namespace TokensMiddleware {
                 const user = await User.findByPk(payload.userId);
 
                 if (user === null) {
-                    return res.status(404).json({ error: "User with given id wasn't found" });
+                    return res.status(404).json({ error: "User with given id doesn't exist" });
                 }
 
                 if (user.role !== role) {
                     return res.status(403).json({ error: "You don't have permissions to perform this operation" });
                 }
 
+                console.log(user);
                 next();
-            }
-
-            handler();
+            });
         };
     }
 

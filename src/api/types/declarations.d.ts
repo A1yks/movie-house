@@ -1,6 +1,8 @@
 import express from 'express';
 
 declare global {
+    var __DEV__: boolean;
+
     declare namespace Server {
         export type ResponseBody<T = any> = { data: T; error?: never } | { error: string; data?: never };
 

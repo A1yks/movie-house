@@ -4,7 +4,9 @@ export interface GetCommentsReq {
     movieId: Movie['id'];
 }
 
-export type CreateCommentReq = Omit<CommentAttrs, 'userId'>;
+export interface CreateCommentReq extends Omit<CommentAttrs, 'userId' | 'id' | 'replyId'> {
+    replyId?: CommentAttrs['replyId'];
+}
 
 export interface EditCommentReq {
     commentId: CommentAttrs['id'];
